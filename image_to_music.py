@@ -74,8 +74,7 @@ def parse_args():
     )
     return parser.parse_args()
 
-# ---------------------------------------------------------------------------------
-# helper to load an audio generator ------------------------------------------------
+
 def load_audio_generator(model_key: str, device: str = "cuda") -> "Callable":
     """
     Return a callable that produces a dict with keys 'sampling_rate' and 'audio'
@@ -93,7 +92,6 @@ def load_audio_generator(model_key: str, device: str = "cuda") -> "Callable":
 
         def run(prompt: str, forward_params: Optional[dict] = None):
             forward_params = forward_params or {}
-            # map the params we used before to AudioLDM2 equivalents
             num_steps = forward_params.get("num_inference_steps", 200)
             length_s  = forward_params.get("audio_length_in_s", 10.0)
             audio = pipe(prompt,
@@ -103,11 +101,9 @@ def load_audio_generator(model_key: str, device: str = "cuda") -> "Callable":
 
         return run
     else:
-        # legacy path – standard Transformers pipeline
         return pipeline("text-to-audio",
                         AVAILABLE_AUDIO_MODELS[model_key],
                         **PIPELINE_KWARGS)
-# ---------------------------------------------------------------------------------
 
 def main():
     args = parse_args()

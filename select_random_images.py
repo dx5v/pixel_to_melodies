@@ -9,20 +9,16 @@ TARGET_DIR = Path("data/selected_images")
 NUM_IMAGES = 50
 
 def main():
-    # Create target directory if it doesn't exist
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
     
-    # Get all jpg files
     image_files = list(SOURCE_DIR.glob("*.jpg"))
     
     if len(image_files) < NUM_IMAGES:
         print(f"Warning: Only {len(image_files)} images available, less than requested {NUM_IMAGES}")
         selected_images = image_files
     else:
-        # Randomly select images
         selected_images = random.sample(image_files, NUM_IMAGES)
     
-    # Copy selected images to target directory
     for img_path in selected_images:
         target_path = TARGET_DIR / img_path.name
         shutil.copy2(img_path, target_path)
